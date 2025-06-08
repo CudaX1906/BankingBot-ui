@@ -12,7 +12,6 @@ function Register() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Handle change for all inputs dynamically
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -25,7 +24,6 @@ function Register() {
     e.preventDefault();
     setError('');
     try {
-      // Pass entire formData to your registerUser API
       await registerUser(formData);
       navigate('/');
     } catch (err) {
@@ -71,7 +69,7 @@ function Register() {
         /><br />
         <button type="submit">Register</button>
       </form>
-      {/* {error && <p style={{ color: 'red' }}>{error}</p>} */}
+      
       <p>Already have an account? <Link to="/login">Login</Link></p>
     </div>
   );
