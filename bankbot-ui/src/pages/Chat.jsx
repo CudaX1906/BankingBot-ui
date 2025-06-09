@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import MessageList from '../components/Chat/MessageList';
 import MessageInput from '../components/Chat/MessageInput';
 import { getResponse, createSession, sessionHistory } from '../utils';
-import Sidebar from '../components/Chat/Sidebar';
-import { Button } from "@/components/ui/button"
+import { AppSidebar } from "../components/Chat/Sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
+
+
+
 
 function Chat() {
   const navigate = useNavigate();
@@ -20,6 +23,7 @@ function Chat() {
       navigate('/');
     }
   }, [navigate]);
+
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -56,11 +60,6 @@ function Chat() {
     
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('session_id');
-    navigate('/');
-  };
 
   const handleSessionSelect = async (id, skipHistory = false) => {
     setSessionId(id);
@@ -92,20 +91,24 @@ function Chat() {
       };
 
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <Sidebar onSessionSelect={handleSessionSelect} activeSessionId={sessionId} />
-      <div style={{ flex: 1, padding: '10px' }}>
-        <div className="chat-header">
-          <h2>Chat</h2>
-          <Button variant="destructive" onClick={handleLogout}>
-            Logout
-          </Button>
-        </div>
-        <MessageList messages={messages} />
+  <div className="flex h-screen w-screen overflow-hidden">
+    <AppSidebar activeSessionId={sessionId} onSessionSelect={handleSessionSelect} />
+
+    <div className="flex flex-1 justify-center items-center p-4 bg-gray-100">
+    <div className="flex flex-col w-full max-w-3xl h-full bg-white rounded-2xl shadow-md overflow-hidden">
+      <header className="flex justify-between items-center p-4 border-b">
+        <SidebarTrigger />
+        <h2 className="text-xl font-semibold">Chat</h2>
+      </header>
+
+      <div className="flex flex-col flex-1 overflow-auto">
+        <MessageList messages={messages} className="flex-1 overflow-auto px-4 py-2" />
         <MessageInput input={input} setInput={setInput} onSend={handleSend} />
       </div>
     </div>
-  );
+  </div>
+  </div>
+);
 }
 
 export default Chat;
